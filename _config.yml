@@ -27,3 +27,4 @@ author:
 navbar: false
 
 gems: [jekyll-paginate]
+theme: jekyll-theme-merlot
