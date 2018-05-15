@@ -1,0 +1,49 @@
+
+PE Analyzer - Project Specification.
+Version 1.0
+
+Document History
+Version 1.0 - Himesh created the initial version.
+
+Document purpose.
+Since it is noticed that the project path is a bit unclear to the team as at 2018-05-15, this document is created to have a solid shared understanding on the project path.
+The document should reflect the current status of the project and what are the next steps as detailed as possible so any one will not have any doubt on what to do next. Any one in the team can update the document when project path is changed.
+
+Project Scope
+ - Project is to create a PE file analyzer.
+ - At very basic level the final output should be able to read a given dll/exe file and display as many information possible.
+ - The final outcome should contain a GUI and a dll file.
+ - The final dll file should expose a simple API to get get detailed information on o given dll/exe file. This will be referred as PEAnalyzer Core in the rest of the document. 
+ - The final GUI should use that PEAnalyzer Core and show the results in a user friendly way. This GUI application will be referred as PEAnalyzer GUI in the rest of this document.
+ 
+GUI
+ - GUI should be a very simple project in Win Forms to display the results and interact with the PEAnalyzer Core.
+ - This project can be ported to WPF at a later stage if time permits.
+ 
+PEAnalyzer Core
+ - This should be usable by the PEAnalyzer GUI.
+ - But it should be independent from the GUI and any other c# project should be able to use this without PEAnalyzer GUI.
+ - Should support both (.NET/Managed) dlls and (native/c&c++/Unmanaged) dlls.
+ - .NET dlls will be decoded using the reflection library provided by Microsoft C#.
+ - native dlls will be decoded using C++ libray imghlp provided with visual c++.
+ - Since the PEAnalyzer Core will be written with c#, we need to connect c++ code with c# when supporting native dlls.
+ - PEAnalyzer Core should have a common/generic datastructure to store any dll file information and it should be exposed outside. 
+ - PEAnalyzer Core should be able to detect the dll files a PEFile depends on.
+ - PEAnalyzer Core should be able to detect the function names defined in each PE file.
+ - PEAnalyzer Core should be able to detect whether a PEFile is x86 or x64
+ - PEAnalyzer Core should be able to detect missing dll files that are needed by a program to run.
+ - Given a dll PEAnalyzer Core should be able to scan a directory and detect which programs inside that directory uses the given dll.
+ - PEAnalyzer Core should store some rules to detect common dll dependency errors and detect if a given dll has one of such issues. This is used to give user friendly suggestions on how to fix it.
+ 
+Testing
+  - will be updated once the project testing strategies are decided.
+ 
+Source Control
+ - Project will have 2 git repositories.
+ - One is for running trials and research work. This will be named as Trial repository.
+ - Other one is to expose the source code to outside. This will be named as Main repository.
+ - You can commit any thing to trial repository and it is very important to commit all most all your work there so team members are updated on what is happening and where are the problems.
+ - The main repository will be a clean one and you should use all the best practices when committing there. This includes proper naming, indentation, spacing , no redundant new lines, no redundant variables and more.
+ 
+Project Logo, PEAnalyzer Core Documentation, Tutorials and Website
+ - Will be updated later.
