@@ -33,8 +33,26 @@ namespace DesktopAppTest
                 fileName = dlg.FileName;
                 CurrentPE = fileName;
                 UpdateUI(fileName);
+
+                ToolStripItem item = new ToolStripMenuItem();
+                //Name that will apear on the menu
+                item.Text = fileName;
+                //Put in the Name property whatever neccessery to retrive your data on click event
+                item.Name = fileName;
+                //On-Click event
+                item.Click += new EventHandler(item_Click);
+                //Add the submenu to the parent menu
+                recentToolStripMenuItem.DropDownItems.Add(item);
             }
 
+        }
+
+        void item_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
+            String fileName = item.Text;
+            CurrentPE = fileName;
+            UpdateUI(fileName);
         }
 
         void RecursivelyPopulateTheTree(PortableExecutable portableExecutable, TreeNodeCollection tNodes)
@@ -62,7 +80,7 @@ namespace DesktopAppTest
             button1.Text = "Add File";
             button2.Text = "Examine Selected";
 
-
+           
             label1.Text = "Imports";
 
             label2.Text = "Exports";
@@ -167,29 +185,9 @@ namespace DesktopAppTest
             CurrentPE = e.Node.Text;
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
+            MessageBox.Show("Todo");
         }
 
         private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -233,5 +231,38 @@ namespace DesktopAppTest
             }
         }
 
+        private void openToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            //dlg.ShowDialog();
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                string fileName;
+                fileName = dlg.FileName;
+                CurrentPE = fileName;
+                UpdateUI(fileName);
+
+                ToolStripItem item = new ToolStripMenuItem();
+                //Name that will apear on the menu
+                item.Text = fileName;
+                //Put in the Name property whatever neccessery to retrive your data on click event
+                item.Name = fileName;
+                //On-Click event
+                item.Click += new EventHandler(item_Click);
+                //Add the submenu to the parent menu
+                recentToolStripMenuItem.DropDownItems.Add(item);
+            }
+        }
+
+        private void aboutToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Portable Executable Scanner 2018!");
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
