@@ -33,56 +33,56 @@ namespace ConsoleAppTestReflection
             Display(indent, "");
             Console.ReadLine();
             // Display information about each assembly loading into this AppDomain.
-            //foreach (Assembly b in AppDomain.CurrentDomain.GetAssemblies())
-            //{
-            //    Display(indent, "Assembly: {0}", b);
+            foreach (Assembly b in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                Display(indent, "assembly: {0}", b);
 
-            //    // Display information about each module of this assembly.
-            //    foreach (Module m in b.GetModules(true))
-            //    {
-            //        Display(indent + 1, "Module: {0}", m.Name);
-            //    }
+                // display information about each module of this assembly.
+                foreach (Module m in b.GetModules(true))
+                {
+                    Display(indent + 1, "module: {0}", m.Name);
+                }
 
-            //    // Display information about each type exported from this assembly.
+                // display informatIon about each type exported from this assembly.
 
-            //    indent += 1;
-            //    foreach (Type t in b.GetExportedTypes())
-            //    {
-            //        Display(0, "");
-            //        Display(indent, "Type: {0}", t);
+                indent += 1;
+            foreach (Type t in b.GetExportedTypes())
+            {
+                Display(0, "");
+                Display(indent, "type: {0}", t);
 
-            //        // For each type, show its members & their custom attributes.
+                // for each type, show its members & their custom attributes.
 
-            //        indent += 1;
-            //        foreach (MemberInfo mi in t.GetMembers())
-            //        {
-            //            Display(indent, "Member: {0}", mi.Name);
-            //            DisplayAttributes(indent, mi);
+                indent += 1;
+                foreach (MemberInfo mi in t.GetMembers())
+                {
+                    Display(indent, "member: {0}", mi.Name);
+                    DisplayAttributes(indent, mi);
 
-            //            // If the member is a method, display information about its parameters.
+                    // if the member is a method, display information about its parameters.
 
-            //            if (mi.MemberType == MemberTypes.Method)
-            //            {
-            //                foreach (ParameterInfo pi in ((MethodInfo)mi).GetParameters())
-            //                {
-            //                    Display(indent + 1, "Parameter: Type={0}, Name={1}", pi.ParameterType, pi.Name);
-            //                }
-            //            }
+                    if (mi.MemberType == MemberTypes.Method)
+                    {
+                        foreach (ParameterInfo pi in ((MethodInfo)mi).GetParameters())
+                        {
+                            Display(indent + 1, "parameter: type={0}, name={1}", pi.ParameterType, pi.Name);
+                        }
+                    }
 
-            //            // If the member is a property, display information about the property's accessor methods.
-            //            if (mi.MemberType == MemberTypes.Property)
-            //            {
-            //                foreach (MethodInfo am in ((PropertyInfo)mi).GetAccessors())
-            //                {
-            //                    Display(indent + 1, "Accessor method: {0}", am);
-            //                }
-            //            }
-            //        }
-            //        indent -= 1;
-            //    }
-            //    indent -= 1;
-            //}
-            Console.ReadLine();
+                    // if the member is a property, display information about the property's accessor methods.
+                    if (mi.MemberType == MemberTypes.Property)
+                    {
+                        foreach (MethodInfo am in ((PropertyInfo)mi).GetAccessors())
+                        {
+                            Display(indent + 1, "accessor method: {0}", am);
+                        }
+                    }
+                }
+                indent -= 1;
+            }
+            indent -= 1;
+        }
+        Console.ReadLine();
 
         }
 
