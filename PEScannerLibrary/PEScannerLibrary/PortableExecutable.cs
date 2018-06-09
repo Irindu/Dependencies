@@ -34,22 +34,22 @@ namespace PEScannerLibrary
         List<string> Imports = new List<string>();
 
 
-        public ArrayList getDependencies() {
+        public ArrayList GetDependencies() {
             return dependencies;
         }
 
 
-       public List<String> getExports()
+       public List<String> GetExports()
         {
             return ExportedFunctions;
         }
 
-        public List<String> getImports()
+        public List<String> GetImports()
         {
             return Imports;
         }
 
-        public void makeDependencies()
+        public void MakeDependencies()
         {
             for (int i = 0; i < 10; i++)
             {
@@ -60,7 +60,7 @@ namespace PEScannerLibrary
             }
         }
 
-        public void makeExports()
+        public void MakeExports()
         {
             for (int i = 0; i < 10; i++)
             {
@@ -70,7 +70,7 @@ namespace PEScannerLibrary
             }
         }
 
-        public void makeImports()
+        public void MakeImports()
         {
 
             for (int i = 0; i < 10; i++) {

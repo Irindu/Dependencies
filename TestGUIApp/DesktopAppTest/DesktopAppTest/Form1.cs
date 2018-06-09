@@ -13,11 +13,31 @@ namespace DesktopAppTest
 {
     public partial class Form1 : Form
     {
-
+        int normalHeight;
+        int normalWidth;
+        int maximizedHeight;
+        int maximizedWidth;
         String CurrentPE = null;
+
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            ResizeRedraw = true;
+            button_Add_File.Anchor = (AnchorStyles.Bottom | AnchorStyles.Left);
+            button_Add_File.Anchor = (AnchorStyles.Bottom | AnchorStyles.Left);
+            treeView_Dependencies.Anchor = (AnchorStyles.Top | AnchorStyles.Left);
+            listBox_Imports.Anchor = (AnchorStyles.Top | AnchorStyles.Right);
+            listBox_Exports.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right);
+            normalHeight = this.Height;
+            normalWidth = this.Width;
+            button_Add_File.Text = "Add File";
+            button_Examine_Selected.Text = "Examine Selected";
+            label_Imports.Text = "Imports";
+            label_Exports.Text = "Exports";
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -42,7 +62,7 @@ namespace DesktopAppTest
                 //On-Click event
                 item.Click += new EventHandler(item_Click);
                 //Add the submenu to the parent menu
-                recentToolStripMenuItem.DropDownItems.Add(item);
+                fileToolStripMenuItemRecent.DropDownItems.Add(item);
             }
 
         }
@@ -75,101 +95,9 @@ namespace DesktopAppTest
             }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            button1.Text = "Add File";
-            button2.Text = "Examine Selected";
-
-           
-            label1.Text = "Imports";
-
-            label2.Text = "Exports";
-
-            //listView1.Items.Add("abc");
-
-            //listView2.Items.Add("Exports");
-
-            //listView1.Items.Add("abc");
-
-
-            //listView1.View = View.Details;
-            //listView1.GridLines = true;
-            //listView1.FullRowSelect = true;
-
-
-            ////Add column header
-            //listView1.Columns.Add("ProductName", 100);
-            //listView1.Columns.Add("Price", 70);
-            //listView1.Columns.Add("Quantity", 70);
-
-            ////Add items in the listview
-            //string[] arr = new string[4];
-            //ListViewItem itm;
-
-            ////Add first item
-            //arr[0] = "product_1";
-            //arr[1] = "100";
-            //arr[2] = "10";
-            //itm = new ListViewItem(arr);
-            //listView1.Items.Add(itm);
-
-            ////Add second item
-            //arr[0] = "product_2";
-            //arr[1] = "200";
-            //arr[2] = "20";
-            //itm = new ListViewItem(arr);
-            //listView1.Items.Add(itm);
-
-            //for (int i = 0; i < 10; i++) {
-            //    listView1.Items.Add("Some Text");
-            //}
-           
-            //   TreeNode tNode;
-            //    tNode = treeView1.Nodes.Add("Websites");
-
-            //treeView1.Nodes[0].Nodes.Add("Net-informations.com");
-            //treeView1.Nodes[0].Nodes[0].Nodes.Add("CLR");
-
-            //treeView1.Nodes[0].Nodes.Add("Vb.net-informations.com");
-            //treeView1.Nodes[0].Nodes[1].Nodes.Add("String Tutorial");
-            //treeView1.Nodes[0].Nodes[1].Nodes.Add("Excel Tutorial");
-
-            //treeView1.Nodes[0].Nodes.Add("Csharp.net-informations.com");
-            //treeView1.Nodes[0].Nodes[2].Nodes.Add("ADO.NET");
-            //treeView1.Nodes[0].Nodes[2].Nodes[0].Nodes.Add("Dataset");
-
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
-            //OpenFileDialog dlg = new openfiledialog();
-            //dlg.showdialog();
-
-            //if (dlg.showdialog() == dialogresult.ok)
-            //{
-            //    string filename;
-            //    filename = dlg.filename;
-            //    MessageBox.show(filename);
-
-            //    treenode tnode;
-            //    tnode = treeview1.nodes.add(filename);
-
-            //}
-
-            //if (treeView1.SelectedNode != null)
-            //{
-            //    String fileName = treeView1.SelectedNode.Name;
-            //    treeView1.Nodes.Clear();
-            //    PortableExecutable pe = new PortableExecutable(fileName);
-            //    pe.makeDependencies();
-            //    //TreeNode tNode;
-            //    //tNode = treeView1.Nodes.Add(fileName);
-            //    MessageBox.Show(fileName);
-            //    TreeNodeCollection tNodes = treeView1.Nodes;
-
-            //    RecursivelyPopulateTheTree(pe, tNodes);
-
-            //}
+           
             if(CurrentPE != null)
             {
                 String fileName = CurrentPE;
@@ -180,8 +108,6 @@ namespace DesktopAppTest
 
         protected void treeView1_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
         {
-            // Determine by checking the Text property.  
-            //  MessageBox.Show(e.Node.Text);
             CurrentPE = e.Node.Text;
         }
 
@@ -192,42 +118,35 @@ namespace DesktopAppTest
 
         private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-           // MessageBox.Show(e.Node.Text);
-
             String fileName = e.Node.Text;
             UpdateUI(fileName);
         }
 
         void UpdateUI(String fileName) {
-            treeView1.Nodes.Clear();
+            treeView_Dependencies.Nodes.Clear();
             PortableExecutable pe = new PortableExecutable(fileName);
-            pe.makeDependencies();
-            //TreeNode tNode;
-            //tNode = treeView1.Nodes.Add(fileName);
-            //  MessageBox.Show(fileName);
-            TreeNodeCollection tNodes = treeView1.Nodes;
+            pe.MakeDependencies();
+            TreeNodeCollection tNodes = treeView_Dependencies.Nodes;
 
             RecursivelyPopulateTheTree(pe, tNodes);
 
-            pe.makeImports();
-            pe.makeExports();
+            pe.MakeImports();
+            pe.MakeExports();
 
-            listBox1.Items.Clear();
-            foreach (object __o in pe.getImports())
+            listBox_Imports.Items.Clear();
+            foreach (object __o in pe.GetImports())
             {
                 String import = (String)__o;
-
                 // loop body
-                listBox1.Items.Add(import);
+                listBox_Imports.Items.Add(import);
             }
 
-            listBox2.Items.Clear();
-            foreach (object __o in pe.getExports())
+            listBox_Exports.Items.Clear();
+            foreach (object __o in pe.GetExports())
             {
                 String import = (String)__o;
-
                 // loop body
-                listBox2.Items.Add(import);
+                listBox_Exports.Items.Add(import);
             }
         }
 
@@ -235,7 +154,6 @@ namespace DesktopAppTest
         {
             OpenFileDialog dlg = new OpenFileDialog();
             //dlg.ShowDialog();
-
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 string fileName;
@@ -251,7 +169,7 @@ namespace DesktopAppTest
                 //On-Click event
                 item.Click += new EventHandler(item_Click);
                 //Add the submenu to the parent menu
-                recentToolStripMenuItem.DropDownItems.Add(item);
+                fileToolStripMenuItemRecent.DropDownItems.Add(item);
             }
         }
 
@@ -263,6 +181,37 @@ namespace DesktopAppTest
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            //Todo
+            if (WindowState == FormWindowState.Maximized)
+            {
+                maximizedHeight = Size.Height;
+                maximizedWidth = Size.Width;
+
+                int heightFactor = maximizedHeight / normalHeight;
+                int widthFactor = maximizedWidth / normalWidth;
+                button_Add_File.Font = new Font(button_Add_File.Font.FontFamily, button_Add_File.Font.Size*heightFactor);
+                button_Examine_Selected.Font = new Font(button_Examine_Selected.Font.FontFamily, 16);
+                button_Add_File.Size = new System.Drawing.Size(button_Add_File.Size.Width*widthFactor, button_Add_File.Size.Height * heightFactor);
+
+                treeView_Dependencies.Font = new Font(treeView_Dependencies.Font.FontFamily, 16);
+                label_Imports.Font = new Font(label_Imports.Font.FontFamily, 16);
+                label_Exports.Font = new Font(label_Exports.Font.FontFamily, 16);
+                listBox_Imports.Font = new Font(listBox_Imports.Font.FontFamily, 16);
+                listBox_Exports.Font = new Font(listBox_Exports.Font.FontFamily, 16);
+
+                listBox_Imports.Size = new System.Drawing.Size(400, 200);
+                listBox_Exports.Size = new System.Drawing.Size(400, 200);
+
+                listBox_Imports.Anchor = AnchorStyles.Left;
+                MessageBox.Show(Size.Height + " " + Size.Width);
+            }
+            else if (WindowState == FormWindowState.Normal) {
+                MessageBox.Show(Size.Height + " " + Size.Width);
+            }
         }
     }
 }
